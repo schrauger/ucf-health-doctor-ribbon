@@ -54,7 +54,7 @@ function create_fields() {
 				'fields'                => array(
 					array(
 						'key'               => 'field_60ec940ed402d',
-						'label'             => 'doctor',
+						'label'             => 'Doctor',
 						'name'              => 'doctor',
 						'type'              => 'post_object',
 						'instructions'      => '',
@@ -76,10 +76,10 @@ function create_fields() {
 					),
 					array(
 						'key' => 'field_60ecaa5ab7305',
-						'label' => 'content',
+						'label' => 'Content/Buttons',
 						'name' => 'content',
 						'type' => 'wysiwyg',
-						'instructions' => 'Whatever you want goes here',
+						'instructions' => '',
 						'required' => 0,
 						'conditional_logic' => 0,
 						'wrapper' => array(

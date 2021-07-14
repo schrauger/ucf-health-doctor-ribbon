@@ -45,18 +45,12 @@ function get_ribbon_content() {
 	}
 
 	$column_1 = "
-	<div class='row'>
-		<div class='col'>
-			<div 
-			class='image'
-			style='background-image: url(\"{$doctor_image_url}\"); width: 100px; height: 100px;'
-			>
-			</div>
-			<div
-			class='name'
-			>
-				{$doctor_name}
-			</div>
+	<div class='wp-block-column'>
+
+		<figure class='wp-block-image size-large is-resized is-style-rounded'><img src='{$doctor_image_url}' alt='{$doctor_name}' class='wp-image-1592' width='150' height='150'></figure>
+
+		<div class='name'>
+			<strong>{$doctor_name}</strong>
 		</div>
 	</div>
 	";
@@ -94,14 +88,11 @@ function get_ribbon_content() {
 
 
 		$column_2 = "
-		<div class='row'>
-			<div class='col'>
-				<div class='languages'>
-					<ul>
-						{$language_list}
-					</ul>
-				</div>
-				
+		<div class='wp-block-column'>
+			<div class='languages'>
+				<ul>
+					{$language_list}
+				</ul>
 			</div>
 		</div>
 		";
@@ -114,22 +105,21 @@ function get_ribbon_content() {
 		$user_content = get_field('content');
 
 		$column_3 = "
-		<div class='row'>
-			<div class='col'>
-				<div class='user-content'>
-					{$user_content}
-				</div>
-			</div>
-		           
+		<div class='wp-block-column'>
+			<div class='user-content'>
+				{$user_content}
+			</div>       
 		</div>
 		";
 
 	}
 	$return_html = "
-		<div class='container'>
-			{$column_1}
-			{$column_2}
-			{$column_3}
+		<div class='alert alert-info' role='information' style='margin-top: 25px;'>
+			<div class='wp-block-columns'>
+				{$column_1}
+				{$column_2}
+				{$column_3}
+			</div>
 		</div>
 	";
 
