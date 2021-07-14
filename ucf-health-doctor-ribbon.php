@@ -90,6 +90,7 @@ function get_ribbon_content() {
 		$column_2 = "
 		<div class='wp-block-column'>
 			<div class='languages'>
+				<h5>Languages Spoken</h5>
 				<ul>
 					{$language_list}
 				</ul>
@@ -107,7 +108,7 @@ function get_ribbon_content() {
 		$column_3 = "
 		<div class='wp-block-column'>
 			<div class='user-content'>
-				{$user_content}
+				Pull Buttons WYSIWIG Here (From profile Person Fields)
 			</div>       
 		</div>
 		";

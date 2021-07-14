@@ -76,7 +76,7 @@ function create_fields() {
 					),
 					array(
 						'key' => 'field_60ecaa5ab7305',
-						'label' => 'Content/Buttons',
+						'label' => 'Buttons',
 						'name' => 'content',
 						'type' => 'wysiwyg',
 						'instructions' => '',
