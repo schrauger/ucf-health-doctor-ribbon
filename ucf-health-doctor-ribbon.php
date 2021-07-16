@@ -3,7 +3,7 @@
 Plugin Name: UCF Health Doctor Ribbon
 Plugin URI: https://github.com/schrauger/ucf-health-doctor-ribbon
 Description: Block to display a ribbon object with doctor information
-Version: 0.1
+Version: 0.3
 Author: Stephen Schrauger
 Author URI: https://www.schrauger.com/
 License: GPLv2 or later
@@ -31,6 +31,7 @@ function get_ribbon_content() {
 
 	// first column
 
+	$doctor = null;
 	if ( get_field( 'doctor' ) ) {
 		$doctor = get_field( 'doctor' );
 		/**
@@ -56,15 +57,21 @@ function get_ribbon_content() {
 	";
 
 
-	// check advanced options to see if we should hide any of the columns
-	$show_column_2 = true;
-	$show_column_3 = true;
-	if (get_field('toggle_advanced_options')){
-		while (have_rows('advanced_options')){
-			the_row();
-			$show_column_2 = !(get_sub_field('hide_languages')); // invert the value (if checked, then hide)
-			$show_column_3 = !(get_sub_field('hide_buttons'));
+	if ($doctor){
+		// check advanced options to see if we should hide any of the columns
+		$show_column_2 = true;
+		$show_column_3 = true;
+		if (get_field('toggle_advanced_options')){
+			while (have_rows('advanced_options')){
+				the_row();
+				$show_column_2 = !(get_sub_field('hide_languages')); // invert the value (if checked, then hide)
+				$show_column_3 = !(get_sub_field('hide_buttons'));
+			}
 		}
+	} else {
+		// check advanced options to see if we should hide any of the columns
+		$show_column_2 = false;
+		$show_column_3 = false;
 	}
 
 	// second column
@@ -103,17 +110,19 @@ function get_ribbon_content() {
 	$column_3 = "";
 	if ($show_column_3) {
 
-		$user_content = get_field('content');
+		//$user_content = get_field('content');
+		$user_content = get_field( 'uchf_schedulereview_buttons', $doctor->ID );
 
 		$column_3 = "
 		<div class='wp-block-column'>
 			<div class='user-content'>
-				Pull Buttons WYSIWIG Here (From profile Person Fields)
+				{$user_content}
 			</div>       
 		</div>
 		";
-
 	}
+
+
 	$return_html = "
 		<div class='alert alert-info' role='information' style='margin-top: 25px;'>
 			<div class='wp-block-columns'>
@@ -125,100 +134,6 @@ function get_ribbon_content() {
 	";
 
 	return $return_html;
-}
-
-function oldstuff() {
-	/*
-	* Visible list of locations.
-	*/
-	$selector_panel_tabs = '';
-	$selector_panel_info = '';
-
-
-	// Get all the pins for the map
-	$pins       = array();
-	$i          = 0;
-	$show_first = true; // set to false to hide all details by default. true to show the first one.
-	while ( have_rows( 'pin_locations' ) ) {
-		the_row();
-
-		$pin_info                  = array();
-		$pin_info[ 'name' ]        = get_sub_field( 'name' );
-		$pin_info[ 'description' ] = get_sub_field( 'description' );
-		//$pin_info[ 'phone_number' ]             = get_sub_field( 'phone_numbers' ); // @TODO this is a repeater
-		$pin_info[ 'hours_of_operation' ] = get_sub_field( 'hours_of_operation' );
-		//$pin_info[ 'coordinates' ]              = get_sub_field( 'coordinates' ); // @TODO this is a group
-		$pin_info[ 'address' ]                  = get_sub_field( 'address' );
-		$pin_info[ 'url' ]                      = get_sub_field( 'url' );
-		$pin_info[ 'written_directs_pdf_file' ] = get_sub_field( 'written_directs_pdf_file' );
-		//$pin_info[''] = get_sub_field('');
-
-		while ( have_rows( 'phone_number' ) ) {
-			the_row();
-			$type                                = get_sub_field( 'type' );
-			$number                              = get_sub_field( 'number' );
-			$pin_info[ 'phone_number' ][ $type ] = $number;
-		}
-
-		// coordinates are in a group, which also needs to be looped even though it isn't a repeater
-		while ( have_rows( 'coordinates' ) ) {
-			the_row();
-			$pin_info[ 'latitude' ]  = get_sub_field( 'latitude' );
-			$pin_info[ 'longitude' ] = get_sub_field( 'longitude' );
-
-		}
-
-
-		$pin_info[ 'slug' ] = 'ucfh-' . md5( json_encode( $pin_info ) );
-		// use md5 to create a unique id that only changes when the pin data changes - for caching and unique id in html
-		// note: ids MUST start with a letter, so prefix the md5 to prevent erros
-
-		$pins[ $pin_info[ 'slug' ] ] = $pin_info;
-
-		// 4. Create an always-visible list entry (outside of the google map interface)
-
-		if ( $i === 0 && $show_first ) {
-			$show_current = true;
-		} else {
-			$show_current = false;
-		}
-
-		$selector_panel_tabs .= selector_panel_list_tab( $pin_info, $show_current );
-		$selector_panel_info .= selector_panel_list_info( $pin_info, $show_current );
-
-		$i ++;
-	}
-
-	$unique_id_all_data = 'ucfh-' . md5( json_encode( $pins ) );
-	// generate another unique id for the parent object. this way, a page with multiple blocks won't interfere with one another.
-	// note: ids MUST start with a letter, so prefix the md5 to prevent erros
-
-	if ( get_field( 'panel_visible' ) ) {
-		$selector_panel = "
-			<div class='info selector-panel locations' >
-				<ul class='nav nav-tabs' id='{$unique_id_all_data}-tabs' role='tablist' >
-					{$selector_panel_tabs}
-				</ul>
-				<div class='tab-content' id='{$unique_id_all_data}-content'>
-					{$selector_panel_info}
-				</div>
-			</div>
-		";
-
-	} else {
-		$selector_panel = '';
-	}
-
-	// All location data is in the array. Output it.
-	$json_object = '<input type="hidden" name="' . html_input_name_locations . '" data-locations=' . "'" . json_encode( $pins ) . "'" . ' />';
-
-	if ( get_field( 'map_visible' ) ) {
-		$map = "<section><div class='ucf-health-locationsmap'  ></div></section>";
-	} else {
-		$map = '';
-	}
-
-	return "<div class='locations-output' id='{$unique_id_all_data}' >{$map}{$json_object}{$selector_panel}</div>";
 }
 
 /**

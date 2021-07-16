@@ -74,7 +74,7 @@ function create_fields() {
 						'return_format'     => 'object',
 						'ui'                => 1,
 					),
-					array(
+					/*array(
 						'key' => 'field_60ecaa5ab7305',
 						'label' => 'Buttons',
 						'name' => 'content',
@@ -92,7 +92,7 @@ function create_fields() {
 						'toolbar' => 'full',
 						'media_upload' => 1,
 						'delay' => 0,
-					),
+					),*/
 					array(
 						'key'               => 'field_60ec942ed402e',
 						'label'             => 'Toggle Advanced Options',
