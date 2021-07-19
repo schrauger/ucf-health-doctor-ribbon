@@ -2,8 +2,8 @@
 /*
 Plugin Name: UCF Health Doctor Ribbon
 Plugin URI: https://github.com/schrauger/ucf-health-doctor-ribbon
-Description: Block to display a ribbon object with doctor information
-Version: 0.3
+Description: Block to display a ribbon object with doctor information. Also adds the languages taxonomy and a column to the single-person output.
+Version: 0.4
 Author: Stephen Schrauger
 Author URI: https://www.schrauger.com/
 License: GPLv2 or later
@@ -14,10 +14,17 @@ namespace ucf_health_doctor_ribbon;
 include_once plugin_dir_path( __FILE__ ) . 'acf-pro/block.php';
 include_once plugin_dir_path( __FILE__ ) . 'taxonomy/languages.php';
 
+/**
+ * Prints out the ribbon
+ */
 function replacement_print() {
 	echo replacement();
 }
 
+/**
+ * Returns the ribbon html
+ * @return string
+ */
 function replacement() {
 	return get_ribbon_content();
 }
