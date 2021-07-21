@@ -48,14 +48,14 @@ function get_ribbon_content() {
 		$doctor_image_array = wp_get_attachment_image_src( get_post_thumbnail_id( $doctor->ID ) ); //@TODO remove hardcode sizing css in div
 		$doctor_image_url   = $doctor_image_array[ 0 ];
 	} else {
-		$doctor_name      = "Choose a doctor";
+		$doctor_name      = "Choose a Doctor";
 		$doctor_image_url = "/wp-content/uploads/2016/10/UCF-Health-logo.jpg";
 	}
 
 	$column_1 = "
 	<div class='wp-block-column'>
 
-		<figure class='wp-block-image size-large is-resized is-style-rounded'><img src='{$doctor_image_url}' alt='{$doctor_name}' class='wp-image-1592' width='150' height='150'></figure>
+		<figure class='wp-block-image size-large is-resized is-style-rounded'><img src='{$doctor_image_url}' alt='{$doctor_name}' class='wp-image-1592' width='120' height='120'></figure>
 
 		<div class='name'>
 			<strong>{$doctor_name}</strong>
@@ -131,7 +131,7 @@ function get_ribbon_content() {
 
 
 	$return_html = "
-		<div class='alert alert-info' role='information' style='margin-top: 25px;'>
+		<div class='alert alert-info doctor-ribbon' role='information'>
 			<div class='wp-block-columns'>
 				{$column_1}
 				{$column_2}
