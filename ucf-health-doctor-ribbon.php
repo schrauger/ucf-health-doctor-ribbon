@@ -3,7 +3,7 @@
 Plugin Name: UCF Health Doctor Ribbon
 Plugin URI: https://github.com/schrauger/ucf-health-doctor-ribbon
 Description: Block to display a ribbon object with doctor information. Also adds the languages taxonomy and a column to the single-person output.
-Version: 0.5
+Version: 0.6
 Author: Stephen Schrauger
 Author URI: https://www.schrauger.com/
 License: GPLv2 or later
@@ -12,7 +12,7 @@ License: GPLv2 or later
 namespace ucf_health_doctor_ribbon;
 
 include_once plugin_dir_path( __FILE__ ) . 'acf-pro/block.php';
-include_once plugin_dir_path( __FILE__ ) . 'taxonomy/languages.php';
+//include_once plugin_dir_path( __FILE__ ) . 'taxonomy/languages.php';
 
 /**
  * Prints out the ribbon
@@ -85,8 +85,10 @@ function get_ribbon_content() {
 	// second column
 	$column_2 = "";
 	if ($show_column_2) {
-
-		$doctor_languages_array = wp_get_post_terms( $doctor->ID, 'languages' );
+		$taxonomy_slug = 'people_group';
+		$language_parent = get_term_by('slug', 'language', $taxonomy_slug);
+		$language_parent_id = $language_parent->term_id;
+		$doctor_languages_array = wp_get_post_terms( $doctor->ID, $taxonomy_slug, ['parent'=>$language_parent_id] );
 
 		$language_list = "";
 		foreach ( $doctor_languages_array as $language ) {
@@ -105,7 +107,7 @@ function get_ribbon_content() {
 		$column_2 = "
 		<div class='wp-block-column'>
 			<div class='languages'>
-				<h5>Languages Spoken</h5>
+				<h5>" . _n("Language", "Languages", sizeof($doctor_languages_array)) . " Spoken</h5>
 				<ul>
 					{$language_list}
 				</ul>
