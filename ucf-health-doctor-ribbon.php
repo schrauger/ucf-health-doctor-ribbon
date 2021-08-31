@@ -85,6 +85,7 @@ function get_ribbon_content() {
 	// second column
 	$column_2 = "";
 	if ($show_column_2) {
+		$content_excerpt = wp_trim_words( get_the_excerpt( $doctor->ID ), '25', '[...]' );
 		$taxonomy_slug = 'people_group';
 		$language_parent = get_term_by('slug', 'language', $taxonomy_slug);
 		$language_parent_id = $language_parent->term_id;
@@ -106,12 +107,9 @@ function get_ribbon_content() {
 
 		$column_2 = "
 		<div class='wp-block-column'>
-			<div class='languages'>
-				<h5>" . _n("Language", "Languages", sizeof($doctor_languages_array)) . " Spoken</h5>
-				<ul>
-					{$language_list}
-				</ul>
-			</div>
+			<div class='user-bio'>
+				{$content_excerpt}
+			</div>    
 		</div>
 		";
 	}
@@ -127,7 +125,13 @@ function get_ribbon_content() {
 		<div class='wp-block-column'>
 			<div class='user-content'>
 				{$user_content}
-			</div>       
+			</div>    
+			<div class='languages'>
+				<strong>" . _n("Language", "Languages", sizeof($doctor_languages_array)) . " Spoken</strong>
+				<ul>
+					{$language_list}
+				</ul>
+			</div>   
 		</div>
 		";
 	}
