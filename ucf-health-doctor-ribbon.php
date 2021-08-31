@@ -56,7 +56,7 @@ function get_ribbon_content() {
 	$column_1 = "
 	<div class='wp-block-column'>
 
-		<a href='{$doctor_image_permalink}' alt='{$doctor_name}' title='{$doctor_name}'><figure class='wp-block-image size-large is-resized is-style-rounded'><img src='{$doctor_image_url}' alt='{$doctor_name}' class='wp-image-1592' width='120' height='120'></figure></a>
+		<a href='{$doctor_image_permalink}' alt='{$doctor_name}' title='{$doctor_name}'><figure class='wp-block-image size-large is-resized is-style-rounded'><img src='{$doctor_image_url}' alt='{$doctor_name}' class='wp-image-1592' width='140' height='140'></figure></a>
 
 		<div class='name'>
 			<a href='{$doctor_image_permalink}' alt='{$doctor_name}' title='{$doctor_name}'><strong>{$doctor_name}</strong></a>
@@ -85,7 +85,7 @@ function get_ribbon_content() {
 	// second column
 	$column_2 = "";
 	if ($show_column_2) {
-		$content_excerpt = wp_trim_words( get_the_excerpt( $doctor->ID ), '25', '[...]' );
+		$content_excerpt = wp_trim_words( get_the_excerpt( $doctor->ID ), '25', '...' );
 		$taxonomy_slug = 'people_group';
 		$language_parent = get_term_by('slug', 'language', $taxonomy_slug);
 		$language_parent_id = $language_parent->term_id;
@@ -109,6 +109,7 @@ function get_ribbon_content() {
 		<div class='wp-block-column'>
 			<div class='user-bio'>
 				{$content_excerpt}
+				<a class='profile-link' href='{$doctor_image_permalink}'>Read More</a>
 			</div>    
 		</div>
 		";
